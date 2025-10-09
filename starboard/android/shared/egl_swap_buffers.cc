@@ -21,7 +21,7 @@
 #include "starboard/shared/gles/gl_call.h"
 
 namespace starboard {
-extern std::atomic_bool g_block_swapbuffers;
+std::atomic_bool g_block_swapbuffers(false);
 }  // namespace starboard
 
 extern "C" {

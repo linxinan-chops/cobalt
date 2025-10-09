@@ -79,7 +79,8 @@ class ContentBrowserTest : public BrowserTestBase {
 
  private:
   raw_ptr<Shell, DanglingUntriaged> shell_ = nullptr;
-
+  std::unique_ptr<base::FeatureList> feature_list =
+      std::make_unique<base::FeatureList>();
 #if BUILDFLAG(IS_MAC)
   // On Mac, without the following autorelease pool, code which is directly
   // executed (as opposed to executed inside a message loop) would autorelease

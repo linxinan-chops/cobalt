@@ -37,6 +37,7 @@ shared_library("starboard_jni_state") {
 config("starboard_platform_libs") {
   libs = [
     "EGL",
+    "GLESv2",
     "OpenSLES",
     "mediandk",
   ]
@@ -152,6 +153,7 @@ static_library("starboard_platform") {
     "accessibility_extension.h",
     "accessibility_get_caption_settings.cc",
     "accessibility_get_display_settings.cc",
+    "accessibility_get_text_to_speech_settings.cc",
     "accessibility_set_captions_enabled.cc",
     "android_media_session_client.cc",
     "application_android.cc",
