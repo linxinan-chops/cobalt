@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Helper script to run Cobalt browser tests individually."""
+"""Helper script to run Cobalt browser tests.
+
+Cobalt is designed to run in single process mode on TV devices. Its
+browsertests is following it with --single-process-test as well.
+To avoid regressions crashed the process, the test process management
+is left in this python script, which list each single test case
+and iterate them.
+"""
 import subprocess
 import sys
 import os
@@ -59,6 +66,25 @@ def main():
     print("No tests found matching the filter.")
     sys.exit(0)
 
+  # Sort tests to ensure PRE_ tests run before their main tests.
+  # Logic: PRE_PRE_Test -> PRE_Test -> Test
+  def get_sort_key(test_name):
+    # test_name is Suite.Test
+    parts = test_name.split(".", 1)
+    if len(parts) != 2:
+      return (test_name, 0)
+    suite, case = parts
+
+    pre_count = 0
+    while case.startswith("PRE_"):
+      case = case[4:]
+      pre_count += 1
+
+    # Sort by base name (Suite.TestBase), then by pre_count DESCENDING
+    return (f"{suite}.{case}", -pre_count)
+
+  tests.sort(key=get_sort_key)
+
   print(f"Found {len(tests)} tests. Running them one by one...\n")
 
   # 2. Run each test in a fresh process
@@ -70,8 +96,6 @@ def main():
     try:
       # We pass the filter to run EXACTLY this test case.
       # Using --gtest_filter=ExactTestName
-      # Add --single-process-tests to avoid content::LaunchTests creating a
-      # duplicate AtExitManager.
       # Add standard Cobalt flags:
       #   --no-sandbox --single-process --no-zygote --ozone-platform=starboard
       cmd = [
@@ -98,7 +122,7 @@ def main():
 
   print("\n" + "=" * 40)
   print(f"Total: {len(tests)}, Passed: {passed_count}, ",
-        "Failed: {len(failed_tests)}")
+        f"Failed: {len(failed_tests)}")
 
   if failed_tests:
     print("\nFailed Tests:")
