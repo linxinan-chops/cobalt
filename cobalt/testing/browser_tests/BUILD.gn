@@ -188,6 +188,7 @@ test("cobalt_browsertests") {
   sources = [
     # TODO(b/458665232): restore browser tests in M138.
     "content_main_runner_impl_browsertest.cc",
+    "main.cc",
 
     #"navigation_browsertest.cc",
     #"session_history_browsertest.cc",
@@ -195,15 +196,6 @@ test("cobalt_browsertests") {
     #"site_per_process_browsertest.h",
     #"web_contents_impl_browsertest.cc",
     #"webrtc_getusermedia_browsertest.cc",
-    "main.cc",
-
-    #"encrypted_media_browsertest.cc",
-    #"frame_tree_browsertest.cc",
-    "media_browsertest.cc",
-    "media_browsertest.h",
-    "media_session_browsertest.cc",
-    "media_source_browsertest.cc",
-
     #"encrypted_media_browsertest.cc",
     #"frame_tree_browsertest.cc",
     "media_browsertest.cc",
