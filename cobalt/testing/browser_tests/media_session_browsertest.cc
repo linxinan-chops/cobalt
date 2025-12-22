@@ -23,6 +23,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "build/build_config.h"
 #include "cobalt/shell/browser/shell.h"
+#include "cobalt/testing/browser_tests/browser/test_shell.h"
 #include "cobalt/testing/browser_tests/content_browser_test.h"
 #include "cobalt/testing/browser_tests/content_browser_test_utils.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
@@ -30,6 +31,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/content_features.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/media_start_stop_observer.h"
@@ -106,6 +108,7 @@ class MediaSessionBrowserTestBase : public ContentBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    ContentBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitchASCII(
         switches::kAutoplayPolicy,
         switches::autoplay::kNoUserGestureRequiredPolicy);
@@ -114,14 +117,14 @@ class MediaSessionBrowserTestBase : public ContentBrowserTest {
   void StartPlaybackAndWait(Shell* shell, const std::string& id) {
     shell->web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
         u"document.querySelector('#" + base::ASCIIToUTF16(id) + u"').play();",
-        base::NullCallback());
+        base::NullCallback(), content::ISOLATED_WORLD_ID_GLOBAL);
     WaitForStart(shell);
   }
 
   void StopPlaybackAndWait(Shell* shell, const std::string& id) {
     shell->web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptForTests(
         u"document.querySelector('#" + base::ASCIIToUTF16(id) + u"').pause();",
-        base::NullCallback());
+        base::NullCallback(), content::ISOLATED_WORLD_ID_GLOBAL);
     WaitForStop(shell);
   }
 
@@ -313,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(MediaSessionBrowserTest, DISABLED_WebContents_Muted) {
 // On Android, System Audio Focus would break this test.
 
 IN_PROC_BROWSER_TEST_F(MediaSessionBrowserTest, MultipleTabsPlayPause) {
-  Shell* other_shell = CreateBrowser();
+  TestShell* other_shell = CreateBrowser();
 
   EXPECT_TRUE(NavigateToURL(shell(),
                             GetTestUrl("media/session", "media-session.html")));
