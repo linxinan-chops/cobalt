@@ -23,6 +23,7 @@
 #include "cobalt/shell/browser/shell.h"
 #include "cobalt/shell/common/shell_switches.h"
 #include "cobalt/shell/common/shell_test_switches.h"  // nogncheck
+#include "cobalt/testing/browser_tests/browser/test_shell.h"
 #include "cobalt/testing/browser_tests/content_browser_test_utils.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
@@ -54,6 +55,7 @@ const char16_t kClean[] = u"CLEAN";
 #endif
 
 void MediaBrowserTest::SetUpCommandLine(base::CommandLine* command_line) {
+  ContentBrowserTest::SetUpCommandLine(command_line);
   command_line->AppendSwitchASCII(
       switches::kAutoplayPolicy,
       switches::autoplay::kNoUserGestureRequiredPolicy);
@@ -130,8 +132,7 @@ void MediaBrowserTest::CleanupTest() {
 std::string MediaBrowserTest::EncodeErrorMessage(
     const std::string& original_message) {
   url::RawCanonOutputT<char> buffer;
-  url::EncodeURIComponent(original_message.data(), original_message.size(),
-                          &buffer);
+  url::EncodeURIComponent(original_message, &buffer);
   return std::string(buffer.data(), buffer.length());
 }
 
@@ -423,7 +424,7 @@ IN_PROC_BROWSER_TEST_P(MediaTest, DISABLED_Navigate) {
 
 // TODO(b/437420909): Investigate failing test.
 IN_PROC_BROWSER_TEST_P(MediaTest, DISABLED_AudioOnly_XHE_AAC_MP4) {
-  if (media::IsSupportedAudioType(
+  if (media::IsDecoderSupportedAudioType(
           {media::AudioCodec::kAAC, media::AudioCodecProfile::kXHE_AAC})) {
     PlayAudio("noise-xhe-aac.mp4");
   }
