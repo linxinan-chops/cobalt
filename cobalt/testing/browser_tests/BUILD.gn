@@ -203,6 +203,13 @@ test("cobalt_browsertests") {
     "media_browsertest.h",
     "media_session_browsertest.cc",
     "media_source_browsertest.cc",
+
+    #"encrypted_media_browsertest.cc",
+    #"frame_tree_browsertest.cc",
+    "media_browsertest.cc",
+    "media_browsertest.h",
+    "media_session_browsertest.cc",
+    "media_source_browsertest.cc",
   ]
 
   if (is_android) {
@@ -438,17 +445,6 @@ static_library("cobalt_shell_test_lib") {
       "browser/shell_platform_test_data_aura.h",
     ]
     deps += [ "//ui/aura" ]
-  }
-
-  if (shell_use_toolkit_views) {
-    if (use_aura) {
-      sources += [
-        "browser/shell_test_platform_delegate.cc",
-        "browser/shell_test_platform_delegate.h",
-      ]
-
-      deps += [ "//ui/views:test_support" ]
-    }
   }
 }
 
