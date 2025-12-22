@@ -59,6 +59,7 @@ void MediaBrowserTest::SetUpCommandLine(base::CommandLine* command_line) {
   command_line->AppendSwitchASCII(
       switches::kAutoplayPolicy,
       switches::autoplay::kNoUserGestureRequiredPolicy);
+  command_line->AppendSwitch(switches::kExposeInternalsForTesting);
 
   std::vector<base::test::FeatureRef> enabled_features = {
 #if BUILDFLAG(IS_ANDROID)

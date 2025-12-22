@@ -95,7 +95,6 @@ ContentBrowserTest::ContentBrowserTest() {
 ContentBrowserTest::~ContentBrowserTest() {}
 
 void ContentBrowserTest::SetUpCommandLine(base::CommandLine* command_line) {
-  LOG(ERROR) << "lxn::: ContentBrowserTest::SetUpCommandLine called.";
   command_line->AppendSwitch(switches::kContentShellHideToolbar);
 }
 

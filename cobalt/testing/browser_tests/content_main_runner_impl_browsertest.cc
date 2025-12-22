@@ -292,10 +292,6 @@ IN_PROC_BROWSER_TEST_F(ContentMainRunnerImplBrowserTest, StartupSequence) {
   // All of the work is done in SetUp().
 }
 
-IN_PROC_BROWSER_TEST_F(ContentMainRunnerImplBrowserTest, PostEarlyInitializationSequence) {
-  EXPECT_TRUE(true);
-}
-
 }  // namespace
 
 }  // namespace content
