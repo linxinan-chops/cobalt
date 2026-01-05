@@ -201,7 +201,7 @@ test("cobalt_browsertests") {
     #"site_per_process_browsertest.h",
     #"web_contents_impl_browsertest.cc",
     #"webrtc_getusermedia_browsertest.cc",
-    "main.cc",
+    "cobalt_browser_tests_main.cc",
   ]
 
   if (is_android) {
@@ -214,7 +214,6 @@ test("cobalt_browsertests") {
 
   public_deps = [
     "//cobalt:common",
-    "//cobalt/browser/h5vcc_runtime:deep_link_manager",
     "//cobalt/shell:cobalt_shell_lib",
     "//content:content_resources",
     "//content/test:test_interfaces",

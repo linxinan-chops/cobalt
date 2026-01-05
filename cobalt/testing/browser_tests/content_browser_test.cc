@@ -29,7 +29,6 @@
 #include "cobalt/shell/common/shell_switches.h"
 #include "cobalt/testing/browser_tests/browser/test_shell.h"
 #include "cobalt/testing/browser_tests/content_browser_test_content_browser_client.h"
-#include "content/browser/devtools/devtools_manager.h"
 #include "content/browser/renderer_host/render_frame_host_impl.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/common/content_paths.h"
