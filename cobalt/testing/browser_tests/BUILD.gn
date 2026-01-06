@@ -130,12 +130,18 @@ if (is_android) {
   import("//build/config/android/rules.gni")
 
   content_browsertests_manifest =
-      "${target_gen_dir}/content_browsertests_manifest/AndroidManifest.xml"
+      "${target_gen_dir}/cobalt_browsertests_apk/AndroidManifest.xml"
 
-  jinja_template("content_browsertests_manifest") {
+  jinja_template("cobalt_browsertests_manifest_gen") {
     testonly = true
-    input = "//cobalt/testing/browser_tests/browsertests_apk/AndroidManifest.xml.jinja2"
+    input = "//cobalt/shell/android/javatests/AndroidManifest.xml"
     output = content_browsertests_manifest
+    includes = [ "//cobalt/shell/android/shell_apk/AndroidManifest.xml.jinja2" ]
+    variables = [
+      "debuggable=true",
+      "manifest_package=org.chromium.content_browsertests_apk",
+      "build_type=$build_type",
+    ]
   }
 
   android_library("content_browsertests_java") {
@@ -147,7 +153,7 @@ if (is_android) {
       "browsertests_apk/src/org/chromium/content_browsertests_apk/ContentShellBrowserTestActivity.java",
     ]
     deps = [
-      ":content_browsertests_manifest",
+      ":cobalt_browsertests_manifest_gen",
       ":content_browsertests_resources",
       "//base:base_java",
       "//base:base_java_test_support",
@@ -206,6 +212,16 @@ test("cobalt_browsertests") {
     sources += [ "browsertests_apk/content_browser_tests_jni_onload.cc" ]
   }
 
+  if (is_starboard) {
+    sources += [
+      "cobalt_browser_tests_main.cc",
+
+      #TODO(b/433354983): Use the shared "sources" list once cobalt_browsertests
+      # can run on other platforms.
+      "content_main_runner_impl_browsertest.cc",
+    ]
+  }
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   configs += [ "//build/config:precompiled_headers" ]
@@ -218,6 +234,14 @@ test("cobalt_browsertests") {
     "//content/test:web_ui_mojo_test_resources",
     "//ui/ozone/platform/starboard:starboard",
   ]
+
+  if (is_starboard) {
+    public_deps += [
+      "//cobalt:common",
+      "//cobalt/shell:cobalt_shell_lib",
+      "//ui/ozone/platform/starboard:starboard",
+    ]
+  }
 
   deps = [
     ":cobalt_browsertests_test_runner",
@@ -360,8 +384,8 @@ test("cobalt_browsertests") {
       "//ui/touch_selection:touch_selection",
     ]
     android_manifest =
-        "${target_gen_dir}/content_browsertests_manifest/AndroidManifest.xml"
-    android_manifest_dep = ":content_browsertests_manifest"
+        "${target_gen_dir}/cobalt_browsertests_apk/AndroidManifest.xml"
+    android_manifest_dep = ":cobalt_browsertests_manifest_gen"
     use_default_launcher = false
   }
 
@@ -370,6 +394,14 @@ test("cobalt_browsertests") {
     data += [
       "//net/tools/testserver/",
       "//third_party/pywebsocket3/src/mod_pywebsocket/",
+    ]
+  }
+
+  if (is_starboard) {
+    deps += [
+      ":cobalt_shell_test_lib",
+      "//content/test:test_support",
+      "//starboard:starboard_headers_only",
     ]
   }
 
@@ -401,6 +433,8 @@ static_library("cobalt_shell_test_lib") {
     "app/shell_main_test_delegate.h",
     "browser/shell_browser_test_context.cc",
     "browser/shell_browser_test_context.h",
+    "browser/shell_browser_test_main_parts.cc",
+    "browser/shell_browser_test_main_parts.h",
     "browser/shell_content_browser_test_client.cc",
     "browser/shell_content_browser_test_client.h",
     "browser/test_shell.cc",
@@ -431,6 +465,10 @@ static_library("cobalt_shell_test_lib") {
       "browser/shell_platform_test_data_aura.h",
     ]
     deps += [ "//ui/aura" ]
+
+    if (shell_use_toolkit_views) {
+      deps += [ "//ui/views:test_support" ]
+    }
   }
 }
 
@@ -441,6 +479,8 @@ source_set("cobalt_browsertests_support") {
     "common/main_frame_counter_test_impl.h",
     "common/power_monitor_test_impl.cc",
     "common/power_monitor_test_impl.h",
+    "common/shell_test_switches.cc",
+    "common/shell_test_switches.h",
     "renderer/render_frame_test_helper.cc",
     "renderer/render_frame_test_helper.h",
     "renderer/shell_render_frame_observer.cc",
@@ -450,7 +490,6 @@ source_set("cobalt_browsertests_support") {
   public_deps = [
     ":cobalt_browsertests_support_mojom",
     ":shell_controller_mojom",
-    "//cobalt/shell:shell_test_switches_lib",
     "//components/custom_handlers:test_support",
     "//components/metrics:test_support",
     "//components/services/storage/test_api",
