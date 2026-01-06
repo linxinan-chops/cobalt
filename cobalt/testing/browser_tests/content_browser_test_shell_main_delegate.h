@@ -30,7 +30,6 @@ class ContentBrowserTestShellMainDelegate : public ShellMainTestDelegate {
 
   // ContentMainDelegate implementation:
   void CreateThreadPool(std::string_view name) override;
-  std::optional<int> PostEarlyInitialization(InvokedIn invoked_in) override;
 
   // ShellMainDelegate overrides.
   content::ContentBrowserClient* CreateContentBrowserClient() override;
