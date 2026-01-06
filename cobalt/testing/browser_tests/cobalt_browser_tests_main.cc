@@ -19,6 +19,7 @@
 #include "base/logging.h"
 #include "base/test/test_support_starboard.h"
 #include "base/test/test_timeouts.h"
+#include "cobalt/shell/browser/shell_devtools_manager_delegate.h"
 #include "cobalt/testing/browser_tests/content_browser_test_shell_main_delegate.h"
 #include "content/public/test/test_launcher.h"
 #include "starboard/event.h"
@@ -75,6 +76,14 @@ void SbEventHandle(const SbEvent* event) {
     int test_result_code =
         content::LaunchTests(&delegate, 1, start_data->argument_count,
                              const_cast<char**>(start_data->argument_values));
+
+    // Manually stop the DevTools handlers. On Starboard (Cobalt), the
+    // BrowserMainRunner is intentionally leaked and its Shutdown() method is
+    // never called for starboard(see ShellMainDelegate::RunProcess). This means
+    // ShellBrowserMainParts::PostMainMessageLoopRun is skipped, so the handlers
+    // are not stopped automatically. If we don't stop them here, they remain
+    // alive at AtExit, causing a "Dangling Pointer" crash.
+    content::ShellDevToolsManagerDelegate::StopHttpHandler();
 
     delete g_platform_event_source;
     g_platform_event_source = nullptr;

@@ -17,7 +17,6 @@
 #include <iostream>
 
 #include "base/command_line.h"
-#include "base/no_destructor.h"
 #include "cobalt/shell/common/shell_test_switches.h"
 #include "cobalt/testing/browser_tests/common/shell_content_test_client.h"
 #include "cobalt/testing/browser_tests/utility/shell_content_utility_client.h"
@@ -41,8 +40,8 @@ std::optional<int> ShellMainTestDelegate::BasicStartupComplete() {
 }
 
 ContentClient* ShellMainTestDelegate::CreateContentClient() {
-  static base::NoDestructor<ShellContentTestClient> content_client;
-  return content_client.get();
+  content_client_ = std::make_unique<ShellContentTestClient>();
+  return content_client_.get();
 }
 
 ContentUtilityClient* ShellMainTestDelegate::CreateContentUtilityClient() {
