@@ -50,7 +50,7 @@ class ShellDevToolsManagerDelegate : public DevToolsManagerDelegate {
       content::DevToolsAgentHostClientChannel* channel) override;
 
  private:
-  raw_ptr<BrowserContext, DisableDanglingPtrDetection> browser_context_;
+  raw_ptr<BrowserContext, DanglingUntriaged> browser_context_;
   base::flat_set<content::DevToolsAgentHostClient*> clients_;
 };
 
