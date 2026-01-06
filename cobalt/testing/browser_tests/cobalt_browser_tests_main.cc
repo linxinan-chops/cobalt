@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// Copyright 2025 The Cobalt Authors. All Rights Reserved.
-=======
 // Copyright 2026 The Cobalt Authors. All Rights Reserved.
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,25 +37,10 @@ static ui::PlatformEventSourceStarboard* g_platform_event_source = nullptr;
 // and the Google Test framework.
 class StarboardTestLauncherDelegate : public content::TestLauncherDelegate {
  public:
-<<<<<<< HEAD
-  // This method is called by content::LaunchTests when it's time to
-  // execute the entire suite of discovered Google Tests.
-  int RunTestSuite(int argc, char** argv) override {
-    // RUN_ALL_TESTS() is the Google Test macro that discovers and runs
-    // all tests linked into the executable.
-    return RUN_ALL_TESTS();
-  }
-
-  // This is the required pure virtual function that we must implement.
-  // It provides the main delegate for the content module, which is
-  // responsible for setting up the content_shell environment for the
-  // tests.
-=======
   // This method is called by content::LaunchTests to
   // execute the entire suite of discovered Google Tests.
   int RunTestSuite(int argc, char** argv) override { return RUN_ALL_TESTS(); }
 
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
   content::ContentMainDelegate* CreateContentMainDelegate() override {
     return new content::ContentBrowserTestShellMainDelegate();
   }
@@ -88,16 +69,9 @@ void SbEventHandle(const SbEvent* event) {
         content::LaunchTests(&delegate, 1, start_data->argument_count,
                              const_cast<char**>(start_data->argument_values));
 
-<<<<<<< HEAD
-    // Manually stop the DevTools handlers. On Starboard (Cobalt), the
-    // BrowserMainRunner is intentionally leaked and its Shutdown() method is
-    // never called for starboard(see ShellMainDelegate::RunProcess). This means
-    // ShellBrowserMainParts::PostMainMessageLoopRun is skipped, so the handlers
-=======
     // Manually stop the DevTools handlers. On Starboard, the
     // BrowserMainRunner is intentionally leaked and its Shutdown() method is
     // never called(see ShellMainDelegate::RunProcess), hence the handlers
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
     // are not stopped automatically. If we don't stop them here, they remain
     // alive at AtExit, causing a "Dangling Pointer" crash.
     content::ShellDevToolsManagerDelegate::StopHttpHandler();
@@ -105,45 +79,19 @@ void SbEventHandle(const SbEvent* event) {
     delete g_platform_event_source;
     g_platform_event_source = nullptr;
 
-<<<<<<< HEAD
-    // After all tests have completed, request a graceful shutdown of
-    // the Starboard application. This will cause SbRunStarboardMain to
-    // exit.
-=======
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
     SbSystemRequestStop(test_result_code);
   }
 }
 
-<<<<<<< HEAD
-// The main entry point for the cobalt_browsertests executable.
-int main(int argc, char** argv) {
-  // Initialize base::CommandLine for any code that needs it early.
-  base::CommandLine::Init(argc, argv);
-
-  // Initialize the Google Test framework. This is crucial for
-  // discovering tests and parsing gtest-specific flags (e.g.,
-  // --gtest_filter).
-=======
 int main(int argc, char** argv) {
   base::CommandLine::Init(argc, argv);
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
   testing::InitGoogleTest(&argc, argv);
 
   // A manager for singleton destruction.
   base::AtExitManager at_exit;
 
-<<<<<<< HEAD
-  // Initialize the Linux UI toolkit.
-  ui::LinuxUi::SetInstance(ui::GetDefaultLinuxUi());
-
-  // This is a blocking call that hands control of the main thread over
-  // to the Starboard event loop. The test logic will be kicked off from
-  // within SbEventHandle when the kSbEventTypeStart event is received.
-=======
   // TODO(b/433354983): Support more platforms.
   ui::LinuxUi::SetInstance(ui::GetDefaultLinuxUi());
 
->>>>>>> b48638a2d7de74219db549ded00648ae0d5869a7
   return SbRunStarboardMain(argc, argv, SbEventHandle);
 }

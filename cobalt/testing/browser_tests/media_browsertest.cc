@@ -22,7 +22,6 @@
 #include "build/build_config.h"
 #include "cobalt/shell/browser/shell.h"
 #include "cobalt/shell/common/shell_switches.h"
-// #include "cobalt/shell/common/shell_test_switches.h"  // nogncheck
 #include "cobalt/testing/browser_tests/browser/test_shell.h"
 #include "cobalt/testing/browser_tests/common/shell_test_switches.h"
 #include "cobalt/testing/browser_tests/content_browser_test_utils.h"
