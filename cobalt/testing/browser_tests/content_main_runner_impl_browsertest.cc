@@ -22,8 +22,6 @@
 #include "base/functional/overloaded.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "build/build_config.h"
-#include "cobalt/shell/browser/shell.h"
-#include "cobalt/shell/browser/shell_platform_delegate.h"
 #include "cobalt/testing/browser_tests/content_browser_test.h"
 #include "cobalt/testing/browser_tests/content_browser_test_shell_main_delegate.h"
 #include "content/public/app/content_main_delegate.h"
@@ -36,7 +34,6 @@
 #include "content/public/utility/content_utility_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/ozone/public/ozone_platform.h"
 
 namespace variations {
 class VariationsIdsProvider;

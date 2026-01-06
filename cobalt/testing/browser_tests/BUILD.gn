@@ -123,9 +123,6 @@ static_library("cobalt_browsertests_test_runner") {
     deps += [ "//ui/views" ]
   }
 
-  if (is_starboard) {
-    deps += [ "//ui/ozone/platform/starboard:starboard" ]
-  }
   configs += [ "//v8:external_startup_data" ]
 }
 
@@ -254,11 +251,8 @@ test("cobalt_browsertests") {
     "//content/browser/background_sync:background_sync_proto",
     "//content/child:for_content_tests",
     "//content/gpu",
-    "//content/public/app",
     "//content/public/browser",
     "//content/public/gpu",
-    "//content/public/renderer",
-    "//content/public/utility",
     "//content/renderer:for_content_tests",
     "//content/services/auction_worklet/public/mojom:for_content_tests",
     "//content/test:mojo_web_test_bindings",
