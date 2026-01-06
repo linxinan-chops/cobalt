@@ -191,9 +191,7 @@ test("cobalt_browsertests") {
 
   sources = [
     # TODO(b/458665232): restore browser tests in M138.
-    "cobalt_browser_tests_main.cc",
-    "content_main_runner_impl_browsertest.cc",
-
+    #"content_main_runner_impl_browsertest.cc",
     #"navigation_browsertest.cc",
     #"session_history_browsertest.cc",
     #"site_per_process_browsertest.cc",
@@ -202,10 +200,10 @@ test("cobalt_browsertests") {
     #"webrtc_getusermedia_browsertest.cc",
     #"encrypted_media_browsertest.cc",
     #"frame_tree_browsertest.cc",
-    "media_browsertest.cc",
-    "media_browsertest.h",
-    "media_session_browsertest.cc",
-    "media_source_browsertest.cc",
+    # "media_browsertest.cc",
+    # "media_browsertest.h",
+    # "media_session_browsertest.cc",
+    # "media_source_browsertest.cc",
   ]
 
   if (is_android) {
@@ -219,6 +217,10 @@ test("cobalt_browsertests") {
       #TODO(b/433354983): Use the shared "sources" list once cobalt_browsertests
       # can run on other platforms.
       "content_main_runner_impl_browsertest.cc",
+      "media_browsertest.cc",
+      "media_browsertest.h",
+      "media_session_browsertest.cc",
+      "media_source_browsertest.cc",
     ]
   }
 
