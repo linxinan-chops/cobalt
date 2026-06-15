@@ -171,12 +171,12 @@ jobs:
           tar -xzf "${TARGET}.tar.gz"
 
           filter_file="cobalt/testing/filters/tvos-arm64-simulator/${TARGET}_filter.json"
-          gtest_filter_arg=""
+          gtest_filter_args=()
           if [[ -f "${filter_file}" ]]; then
             echo "Found filter file: ${filter_file}"
             failing_tests=$(jq -r '.failing_tests | join(":")' "${filter_file}")
             if [[ -n "${failing_tests}" ]]; then
-              gtest_filter_arg="-c '--gtest_filter=-${failing_tests}'"
+              gtest_filter_args=(-c "--gtest_filter=-${failing_tests}")
               echo "Applying gtest_filter: -${failing_tests}"
             fi
           fi
@@ -186,5 +186,5 @@ jobs:
             -d "Apple TV 4K (3rd generation)" \
             -v \
             -i \
-            ${gtest_filter_arg} \
+            "${gtest_filter_args[@]}" \
             "./${TARGET}.app"
