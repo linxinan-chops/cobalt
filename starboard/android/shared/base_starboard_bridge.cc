@@ -91,7 +91,8 @@ jlong JNI_BaseStarboardBridge_StartNativeStarboard(
   if (g_native_app_instance == nullptr) {
     auto command_line = std::make_unique<CommandLine>(GetArgs());
     LogInit(*command_line);
-    ScopedJavaGlobalRef<jobject> asset_manager(env, j_asset_manager.obj());
+    ScopedJavaGlobalRef<jobject> asset_manager(
+        env, jni_zero::ScopedJavaLocalRef<jobject>(env, j_asset_manager.obj()));
     g_native_app_instance = new ApplicationAndroid(
         std::move(command_line), std::move(asset_manager),
         ConvertJavaStringToUTF8(env, j_files_dir),
@@ -207,7 +208,7 @@ SB_EXPORT_ANDROID StarboardBridge* StarboardBridge::GetInstance() {
 }
 
 void StarboardBridge::Initialize(JNIEnv* env, jobject obj) {
-  j_starboard_bridge_.Reset(env, obj);
+  j_starboard_bridge_.Reset(jni_zero::ScopedJavaLocalRef<jobject>(env, obj));
 }
 
 int64_t StarboardBridge::GetAppStartTimestamp(JNIEnv* env) {

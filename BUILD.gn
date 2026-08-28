@@ -842,16 +842,14 @@ group("gn_all") {
     deps += [ "//internal:all" ]
   }
 
-<<<<<<< HEAD
-  if (checkout_clusterfuzz_data) {
-    deps += [ "//clusterfuzz-data:all" ]
-=======
-  if (is_cobalt) {
+if (is_cobalt) {
     deps += [
       "//cobalt:gn_all",
       "//cobalt:cobalt_browsertests",
     ]
->>>>>>> parent of dd8062a82eb (CONFLICTED Chromium Cherry pick: Revert Cobalt.)
+  }
+  if (checkout_clusterfuzz_data) {
+    deps += [ "//clusterfuzz-data:all" ]
   }
 }
 

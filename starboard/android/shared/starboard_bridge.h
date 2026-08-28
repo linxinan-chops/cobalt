@@ -21,6 +21,8 @@
 #include "starboard/common/size.h"
 #include "third_party/jni_zero/jni_zero.h"
 
+#include <vector> // Required for std::vector
+
 namespace starboard {
 
 // This class serves as a bridge between the native code and Android

@@ -257,7 +257,8 @@ void MediaCodecBridge::Initialize(jobject j_media_codec_bridge) {
   SB_DCHECK(j_media_codec_bridge);
 
   JNIEnv* env = AttachCurrentThread();
-  j_media_codec_bridge_.Reset(env, j_media_codec_bridge);
+  j_media_codec_bridge_.Reset(
+      jni_zero::ScopedJavaLocalRef<jobject>(env, j_media_codec_bridge));
 }
 
 Span<uint8_t> MediaCodecBridge::GetInputBufferAddress(jint index) {
@@ -268,7 +269,7 @@ Span<uint8_t> MediaCodecBridge::GetInputBufferAddress(jint index) {
   if (!byte_buffer) {
     return {};
   }
-  auto span = JavaByteBufferToMutableSpan(env, byte_buffer.obj());
+  auto span = JavaByteBufferToMutableSpan(env, byte_buffer);
   return {span.data(), span.size()};
 }
 
@@ -338,7 +339,7 @@ Span<uint8_t> MediaCodecBridge::GetOutputBufferAddress(jint index) {
   if (!byte_buffer) {
     return {};
   }
-  auto span = JavaByteBufferToMutableSpan(env, byte_buffer.obj());
+  auto span = JavaByteBufferToMutableSpan(env, byte_buffer);
   return {span.data(), span.size()};
 }
 
