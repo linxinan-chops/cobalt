@@ -474,7 +474,7 @@ if (prefetch_policy == kAllowPrefetching) {
 #endif  // BUILDFLAG(IS_COBALT)
   }
 
-  should_skip_preload_scan_ = ShouldSkipPreloadScan();}
+}
 
 HTMLDocumentParser::~HTMLDocumentParser() {
   TRACE_EVENT_WITH_FLOW0("blink", "HTMLDocumentParser::~HTMLDocumentParser",
